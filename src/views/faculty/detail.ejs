@@ -4,26 +4,47 @@
     <div class="course-header">
         <h1><%= faculty.name %></h1>
         <p class="faculty-title"><%= faculty.title %></p>
-        <p class="faculty-department"><%= faculty.department %> Department</p>
+        <p class="faculty-department">
+            <%= faculty.department %> Department
+        </p>
     </div>
 
     <div class="section-list">
         <h2>Contact Information</h2>
 
         <div class="section-card">
-            <p><strong>Office:</strong> <%= faculty.office %></p>
-            <p><strong>Phone:</strong> 
-                <a href="tel:<%= faculty.phone %>"><%= faculty.phone %></a>
+            <p>
+                <strong>Office:</strong> 
+                <%= faculty.office || 'Not available' %>
             </p>
-            <p><strong>Email:</strong> 
-                <a href="mailto:<%= faculty.email %>"><%= faculty.email %></a>
+
+            <p>
+                <strong>Phone:</strong>
+                <% if (faculty.phone) { %>
+                    <a href="tel:<%= faculty.phone %>"><%= faculty.phone %></a>
+                <% } else { %>
+                    Not available
+                <% } %>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <% if (faculty.email) { %>
+                    <a href="mailto:<%= faculty.email %>"><%= faculty.email %></a>
+                <% } else { %>
+                    Not available
+                <% } %>
             </p>
         </div>
     </div>
 
     <div class="navigation">
-        <p><a href="/faculty">&larr; Back to Faculty Directory</a></p>
+        <p>
+            <a href="/faculty">&larr; Back to Faculty Directory</a>
+        </p>
     </div>
 </main>
+
+
 
 <%- include('../partials/footer') %>
