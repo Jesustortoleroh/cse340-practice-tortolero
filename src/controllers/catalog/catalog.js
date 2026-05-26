@@ -37,7 +37,8 @@ const courseDetailPage = async (req, res, next) => {
         title: `${course.courseCode} - ${course.name}`,
         course: course,
         sections: sections,
-        currentSort: sortBy
+        currentSort: sortBy,
+        queryParams: req.query,
     });
 };
 
