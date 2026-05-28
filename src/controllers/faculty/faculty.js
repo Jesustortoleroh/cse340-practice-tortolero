@@ -2,15 +2,24 @@ import { getFacultyBySlug, getSortedFaculty } from '../../models/faculty/faculty
 
 
 // Faculty list
-const facultyListPage = async (req, res) => {
-    const validSortOptions = ['name', 'department', 'title'];
-    const sortBy = validSortOptions.includes(req.query.sort) ? req.query.sort : 'department';
-    const facultyList = await getSortedFaculty(sortBy);
-    res.render('faculty/list', {
-        title: 'Faculty Directory',
-        faculty: facultyList,
-        currentSort: sortBy
-    });
+const facultyListPage = async (req, res, next) => {
+    try {
+        // Validate sort option
+        const validSortOptions = ['name', 'department', 'title'];
+        const sortBy = validSortOptions.includes(req.query.sort) 
+            ? req.query.sort 
+            : 'name';  
+        
+        const facultyList = await getSortedFaculty(sortBy);
+        
+        res.render('faculty/list', {
+            title: 'Faculty Directory',
+            faculty: facultyList,
+            currentSort: sortBy
+        });
+    } catch (error) {
+        next(error);
+    }
 };
 
 // Faculty detail
