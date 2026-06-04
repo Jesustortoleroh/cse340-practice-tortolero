@@ -37,8 +37,11 @@ const processLogin = async (req, res) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {        
-    console.log(errors.array());
-    return res.redirect('/login');
+    // Flash each validation error and redirect back to /login
+        errors.array().forEach(err => {
+            req.flash('error', err.msg);
+        });
+        return res.redirect('/login');
 
     }
     // Extract validated data
@@ -49,14 +52,14 @@ const processLogin = async (req, res) => {
 
         
         if (!user) {
-            console.log("User not found");
+            req.flash('error', 'Invalid email or password');
             return res.redirect('/login');
         }
 
         // Verify password
         const passwordVerification = await verifyPassword(password, user.password);
         if (!passwordVerification) {
-            console.log("Invalid password");
+            req.flash('error', 'Invalid email or password');
             return res.redirect('/login');
         }
         
@@ -69,6 +72,7 @@ const processLogin = async (req, res) => {
     } catch (error) {
         // Model functions do not catch errors, so handle them here
         console.error('Error during login process:', error);
+        req.flash('error', 'We could not sign you in at this time. Please try again later.');
         return res.redirect('/login');
     }
 };
@@ -110,7 +114,7 @@ const processLogout = (req, res) => {
 
         // If session destruction succeeded, clear the session cookie from the browser
         res.clearCookie('connect.sid');
-
+        req.flash('success', 'You have been logged out successfully.');
         // Redirect the user to the home page
         res.redirect('/');
     });
