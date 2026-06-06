@@ -23,12 +23,7 @@ const findUserByEmail = async (email) => {
     `;
     const result = await db.query(query, [email]);
     return result.rows[0] || null;
-   
-    
-   
-    
 };
-
 /**
  * Verify a plain text password against a stored bcrypt hash.
  * 
