@@ -132,3 +132,26 @@
         }
     }
 }
+
+.faculty-card {
+    position: relative;
+}
+
+.faculty-photo {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 7px;
+    background: url('https://placehold.co/480') center / cover no-repeat;
+}
+
+.faculty-detail-photo {
+    width: 250px;
+    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    margin-bottom: 20px;
+    background: url('https://placehold.co/480') center / cover no-repeat;
+}

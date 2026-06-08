@@ -18,10 +18,11 @@
         <a href="/faculty?sort=title" 
            class="<%= currentSort === 'title' ? 'active' : '' %>">Title</a>
     </div>
-    
+
     <div class="course-list">
         <% faculty.forEach(member => { %>
-            <div class="course-card">
+            <div class="faculty-card">
+                <img src="/images/faculty/<%= member.slug %>.jpg" alt="<%= member.name %>">
                 <h3>
                     <a href="/faculty/<%= member.slug %>">
                         <%= member.name %>
