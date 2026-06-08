@@ -1,8 +1,13 @@
+// Import necessary modules and route handlers
 import { Router } from 'express';
-import contactRoutes from './forms/contact.js';
-import registrationRoutes from './forms/registration.js';
-import loginRoutes from './forms/login.js';
-import { processLogout, showDashboard } from './forms/login.js';
+import { addDemoHeaders } from '../middleware/demo/headers.js';
+import { catalogPage, courseDetailPage } from './catalog/catalog.js';
+import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
+import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
+import { showContactForm, handleContactSubmission, showContactResponses } from './forms/contact.js';
+import { showRegistrationForm, processRegistration, showAllUsers, showEditAccountForm, processEditAccount,  processDeleteAccount } from './forms/registration.js';
+import { showLoginForm, processLogin, processLogout, showDashboard } from './forms/login.js';
+import { contactValidation, registrationValidation, loginValidation, editValidation } from '../middleware/validation/forms.js';
 import { requireLogin } from '../middleware/auth.js';
 
 // Create a new router instance
@@ -41,12 +46,6 @@ router.use('/login', (req, res, next) => {
 
 
 
-// Import statements for controllers and middleware
-import { addDemoHeaders } from '../middleware/demo/headers.js';
-import { catalogPage, courseDetailPage } from './catalog/catalog.js';
-import { homePage, aboutPage, demoPage, testErrorPage } from './index.js';
-import { facultyListPage, facultyDetailPage } from './faculty/faculty.js';
-
 // Route definitions
 // Home and basic pages
 router.get('/', homePage);
@@ -67,13 +66,21 @@ router.get('/faculty', facultyListPage);
 router.get('/faculty/:facultySlug', facultyDetailPage);
 
 // Contact form routes
-router.use('/contact', contactRoutes);
+router.get('/contact', showContactForm);
+router.post('/contact', contactValidation, handleContactSubmission );
+router.get('/contact/responses', showContactResponses );
 
 // Registration routes
-router.use('/register', registrationRoutes);
+router.get('/register', showRegistrationForm);
+router.post('/register', registrationValidation, processRegistration );
+router.get('/register/list', showAllUsers);
+router.get('/register/:id/edit', requireLogin, showEditAccountForm);
+router.post('/register/:id/edit', requireLogin, editValidation, processEditAccount);
+router.post('/register/:id/delete', requireLogin, processDeleteAccount);
 
-// Login routes (form and submission)
-router.use('/login', loginRoutes);
+// Login routes
+router.get('/login', showLoginForm);
+router.post('/login', loginValidation, processLogin);
 
 // Authentication-related routes at root level
 router.get('/logout', processLogout);
